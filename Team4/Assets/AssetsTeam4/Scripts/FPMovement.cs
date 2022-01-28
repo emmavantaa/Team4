@@ -9,7 +9,7 @@ public class FPMovement : MonoBehaviour
     private float speed = 12f;
     private float gravity = -10f;
     private float jumpHeight = 4f;
-    private float groundDistance = 0.4f;
+    private float groundDistance = 0.2f;
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -22,7 +22,7 @@ public class FPMovement : MonoBehaviour
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
+        
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -3f;
