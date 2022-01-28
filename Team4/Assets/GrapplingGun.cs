@@ -14,7 +14,7 @@ public class GrapplingGun : MonoBehaviour
 
     public LayerMask whatIsGrappleable;
     public Transform beamStartPoint, aimingCamera, player;
-    
+
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -64,7 +64,7 @@ public class GrapplingGun : MonoBehaviour
             joint.minDistance = distanceFromPoint * 0.25f;
 
             // Gameplay variables - test and change if needed
-            joint.spring = 54.5f; // <-- original was 4, tried out what much bigger value would do. -Topi
+            joint.spring = 4f; // <-- original was 4, tried out what much bigger value would do. -Topi
             joint.damper = 7f;
             joint.massScale = 4.5f;
 
@@ -114,8 +114,9 @@ public class GrapplingGun : MonoBehaviour
     /// Not yet implemented, probably won't work as it is.
     /// </summary>
     private void GrapplePull()
-    {
+    {/*
         Vector3 grappleDir = (grapplePoint - player.position).normalized;
         player.position = player.position + (grappleDir * 0.2f);
+        */
     }
 }
