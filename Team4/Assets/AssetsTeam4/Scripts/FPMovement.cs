@@ -5,7 +5,7 @@ using UnityEngine;
 public class FPMovement : MonoBehaviour
 {
     [SerializeField] private GrapplingGun grapplingScript;
-
+    public Rigidbody rb;
     private float speed = 12f;
     private float gravity = -10f;
     private float jumpHeight = 4f;
@@ -13,6 +13,7 @@ public class FPMovement : MonoBehaviour
     private Vector3 velocity;
     private float swingVelocity;
     private bool isGrounded;
+    private bool justGRappled;
 
     private bool isSwinging = false;
 
@@ -20,7 +21,10 @@ public class FPMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundMask;
 
-
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
@@ -34,15 +38,18 @@ public class FPMovement : MonoBehaviour
         if (!isGrounded && grapplingScript.Grappling())
         {
             controller.enabled = false;
-            velocity.y = swingVelocity;
-            velocity.y = -2f;
+            if (justGRappled)
+            {
+                // rb.AddForce(velocity);
+                justGRappled = false;
+            }
             isSwinging = true;
         }
         else
         {
             if (isSwinging)
             {
-                velocity.y = Mathf.Sqrt(swingVelocity * -2 * gravity);
+                velocity.y = Mathf.Sqrt(gravity * -2 * gravity);
                 if (isGrounded)
                 {
                     isSwinging = false;
@@ -51,7 +58,7 @@ public class FPMovement : MonoBehaviour
 
             else
             {
-
+                rb.velocity = Vector3.zero;
                 controller.enabled = true;
                 velocity.y += gravity * Time.deltaTime;
 
