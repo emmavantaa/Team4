@@ -13,7 +13,7 @@ public class RotateGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!grappling.IsGrappling())
+        if (!grappling.Grappling())
         {
             desiredRotation = transform.parent.rotation;
         }
