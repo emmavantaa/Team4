@@ -7,6 +7,7 @@ public class Grappling : MonoBehaviour
     private LineRenderer lr;
     private Vector3 grapplePoint;
     private SpringJoint joint;
+    public LayerMask grappMask;
 
     /** Public variables */
 
@@ -48,7 +49,7 @@ public class Grappling : MonoBehaviour
     void StartGrapple()
     {
         RaycastHit hit;
-        if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance))
+        if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance, grappMask))
         {
             grapplePoint = hit.point;
             joint = player.gameObject.AddComponent<SpringJoint>();
