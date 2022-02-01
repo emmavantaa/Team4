@@ -51,6 +51,7 @@ public class FPMovement : MonoBehaviour
 
             else
             {
+
                 controller.enabled = true;
                 velocity.y += gravity * Time.deltaTime;
 
