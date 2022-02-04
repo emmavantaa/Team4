@@ -17,6 +17,6 @@ public class MoveCamera : MonoBehaviour
         transform.position = player.transform.position;
 
         FirstPersonCam.transform.position = head.transform.position;
-        ThirdPersonCam.transform.position = followPoint.transform.position;
+        //    ThirdPersonCam.transform.position = followPoint.transform.position;
     }
 }

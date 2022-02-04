@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
 {
+    [SerializeField] private GrapplingGun grapplingScript;
     private LineRenderer lr;
     private Vector3 grapplePoint;
     private Vector3 startPoint;
@@ -31,7 +32,7 @@ public class GrapplingGun : MonoBehaviour
 
     void Update()
     {
-        isGrounded = playerObject.GetComponent<PlayerMovement_GrapplingDemo>().grounded;
+        isGrounded = playerObject.GetComponent<PlayerMovement_GrapplingDemo>().isGrounded;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -136,11 +137,6 @@ public class GrapplingGun : MonoBehaviour
         Vector3 grappleDir = (grapplePoint - player.position).normalized;
         player.position = player.position + (grappleDir * 0.2f);
         */
-    }
-
-    public bool IsGrappling()
-    {
-        return isGrappling;
     }
 
     public Vector3 GetGrapplePoint()
