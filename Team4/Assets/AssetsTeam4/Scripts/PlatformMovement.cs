@@ -10,16 +10,15 @@ public class PlatformMovement : MonoBehaviour
     public float speed = 5;
     float wpradius = 1;
 
-
-    public Rigidbody rb;
+    //public Rigidbody rb;
     public GameObject player;
-    public FPMovement pS;
+    public GameObject playerBody;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -38,14 +37,24 @@ public class PlatformMovement : MonoBehaviour
 
         }
 
-        //transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
-        rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
+        transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
 
-        if (pS.isPlatform)
+        // Moves the rb instead to be more "physics-based"
+        //rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
+}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == playerBody)
         {
             player.transform.parent = transform;
         }
-        else {
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == playerBody)
+        {
             player.transform.parent = null;
         }
     }
