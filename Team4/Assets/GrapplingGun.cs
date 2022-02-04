@@ -11,7 +11,8 @@ public class GrapplingGun : MonoBehaviour
     private SpringJoint joint;
     private float maxDistance = 50;
 
-    private bool isShooting, isGrappling, isGrounded;
+    private bool isShooting, isGrounded;
+    public bool isGrappling;
 
     public LayerMask whatIsGrappleable;
     public GameObject playerObject;
