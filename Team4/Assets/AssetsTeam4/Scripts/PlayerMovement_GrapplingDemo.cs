@@ -5,6 +5,8 @@ using System;
 
 public class PlayerMovement_GrapplingDemo : MonoBehaviour
 {
+    [SerializeField] private GrapplingGun grapplingScript;
+
     //Assingables
     public Transform playerCam;
     public Transform orientation;
@@ -20,12 +22,16 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
     //Movement
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
-    public bool grounded;
+    public float sprintMultiplier = 20;
+    public bool isGrounded;
     public LayerMask whatIsGround;
 
     public float counterMovement = 0.175f;
     private float threshold = 0.01f;
     public float maxSlopeAngle = 35f;
+
+    //Sprint
+    private bool isSprinting;
 
     //Crouch & Slide
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
@@ -85,6 +91,13 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
             StartCrouch();
         if (Input.GetKeyUp(KeyCode.LeftControl))
             StopCrouch();
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            isSprinting = true;
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+            isSprinting = false;
+
     }
 
     private void StartCrouch()
@@ -93,7 +106,7 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
         if (rb.velocity.magnitude > 0.5f)
         {
-            if (grounded)
+            if (isGrounded)
             {
                 rb.AddForce(orientation.transform.forward * slideForce);
             }
@@ -123,9 +136,8 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
 
         //Set max speed
         float maxSpeed = this.maxSpeed;
-
-        //If sliding down a ramp, add force down so player stays grounded and also builds speed
-        if (crouching && grounded && readyToJump)
+        //If sliding down a ramp, add force down so player stays isGrounded and also builds speed
+        if (crouching && isGrounded && readyToJump)
         {
             rb.AddForce(Vector3.down * Time.deltaTime * 3000);
             return;
@@ -141,23 +153,37 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
         float multiplier = 1f, multiplierV = 1f;
 
         // Movement in air
-        if (!grounded)
+        if (!isGrounded)
         {
-            multiplier = 0.5f;
-            multiplierV = 0.5f;
+            multiplier = 0.8f;
+            multiplierV = 0.8f;
         }
 
         // Movement while sliding
-        if (grounded && crouching) multiplierV = 0f;
+        if (isGrounded && crouching) multiplierV = 0f;
 
         //Apply forces to move player
-        rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
-        rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
+        if (isSprinting && isGrounded)
+        {
+            rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV * sprintMultiplier);
+            rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
+        }
+        else if (grapplingScript.Grappling())
+        {
+            rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV / 50);
+            rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier / 100);
+        }
+        else
+        {
+            rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
+            rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
+        }
+
     }
 
     private void Jump()
     {
-        if (grounded && readyToJump)
+        if (isGrounded && readyToJump)
         {
             readyToJump = false;
 
@@ -202,7 +228,7 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
 
     private void CounterMovement(float x, float y, Vector2 mag)
     {
-        if (!grounded || jumping) return;
+        if (!isGrounded || jumping) return;
 
         //Slow down sliding
         if (crouching)
@@ -256,7 +282,7 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
         return angle < maxSlopeAngle;
     }
 
-    private bool cancellingGrounded;
+    private bool cancellingisGrounded;
 
     /// <summary>
     /// Handle ground detection
@@ -274,25 +300,25 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
             //FLOOR
             if (IsFloor(normal))
             {
-                grounded = true;
-                cancellingGrounded = false;
+                isGrounded = true;
+                cancellingisGrounded = false;
                 normalVector = normal;
-                CancelInvoke(nameof(StopGrounded));
+                CancelInvoke(nameof(StopisGrounded));
             }
         }
 
         //Invoke ground/wall cancel, since we can't check normals with CollisionExit
         float delay = 3f;
-        if (!cancellingGrounded)
+        if (!cancellingisGrounded)
         {
-            cancellingGrounded = true;
-            Invoke(nameof(StopGrounded), Time.deltaTime * delay);
+            cancellingisGrounded = true;
+            Invoke(nameof(StopisGrounded), Time.deltaTime * delay);
         }
     }
 
-    private void StopGrounded()
+    private void StopisGrounded()
     {
-        grounded = false;
+        isGrounded = false;
     }
 }
 
