@@ -26,11 +26,13 @@ public class PlatformMovement : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (Vector3.Distance(waypoints[num].transform.position, transform.position) < wpradius) {
+        if (Vector3.Distance(waypoints[num].transform.position, transform.position) < wpradius)
+        {
 
             num++;
 
-            if (num >= waypoints.Length) {
+            if (num >= waypoints.Length)
+            {
 
                 num = 0;
 
@@ -41,13 +43,6 @@ public class PlatformMovement : MonoBehaviour
         //transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
         rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
 
-        if (pS.isPlatform)
-        {
-            player.transform.parent = transform;
-        }
-        else {
-            player.transform.parent = null;
-        }
     }
 
 }
