@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class GrapplingGun : MonoBehaviour
 {
+    [SerializeField] private GrapplingGun grapplingScript;
     private LineRenderer lr;
     private Vector3 grapplePoint;
     private Vector3 startPoint;
     private SpringJoint joint;
     private float maxDistance = 50;
 
-    private bool isShooting, isGrappling;
+    private bool isShooting, isGrappling, isGrounded;
 
     public LayerMask whatIsGrappleable;
+    public GameObject playerObject;
     public Transform beamStartPoint, aimingCamera, player;
+
+    public float jointSpring = 4f;
+    public float jointDamper = 7f;
+    public float massScale = 4.5f;
+    public float jointSpringGrounded = 4f;
 
     void Awake()
     {
@@ -25,6 +32,8 @@ public class GrapplingGun : MonoBehaviour
 
     void Update()
     {
+        isGrounded = playerObject.GetComponent<PlayerMovement_GrapplingDemo>().isGrounded;
+
         if (Input.GetMouseButtonDown(0))
         {
             StartGrapple();
@@ -64,9 +73,19 @@ public class GrapplingGun : MonoBehaviour
             joint.minDistance = distanceFromPoint * 0.25f;
 
             // Gameplay variables - test and change if needed
-            joint.spring = 4f; // <-- original was 4, tried out what much bigger value would do. -Topi
-            joint.damper = 7f;
-            joint.massScale = 4.5f;
+
+            if (isGrounded)
+            {
+                joint.spring = jointSpringGrounded;
+            }
+            else
+            {
+                joint.spring = jointSpring;
+            }
+            joint.damper = jointDamper;
+            joint.massScale = massScale;
+
+
 
             lr.positionCount = 2;
         }
@@ -118,5 +137,10 @@ public class GrapplingGun : MonoBehaviour
         Vector3 grappleDir = (grapplePoint - player.position).normalized;
         player.position = player.position + (grappleDir * 0.2f);
         */
+    }
+
+    public Vector3 GetGrapplePoint()
+    {
+        return grapplePoint;
     }
 }

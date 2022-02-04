@@ -9,7 +9,7 @@ public class Reticle : MonoBehaviour
 
     public float restingSize = 15;
     public float maxSize = 50;
-    public float maxDistance = 100;
+    public float maxDistance = 50;
     public float speed = 15;
     public Transform aimingCamera;
     public LayerMask grappMask;
@@ -44,7 +44,7 @@ public class Reticle : MonoBehaviour
     private void GrappleCheck()
     {
         RaycastHit hit;
-        if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, 100, grappMask))
+        if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance, grappMask))
         {
             Debug.Log("CAN");
             canGrapple = true;

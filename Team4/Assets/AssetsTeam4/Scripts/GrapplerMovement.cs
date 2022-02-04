@@ -19,8 +19,8 @@ public class GrapplerMovement : MonoBehaviour
 
     void Update()
     {
-        xRotation = PlayerCamera.transform.eulerAngles.x + 90;
-        
+        xRotation = PlayerCamera.transform.eulerAngles.x;// + 90;
+
     }
 
     void LateUpdate()
