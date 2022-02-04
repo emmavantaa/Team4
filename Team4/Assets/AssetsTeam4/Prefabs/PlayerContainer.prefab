@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132f4a27bc6152b49b439f6318e14620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grapplingScript: {fileID: 0}
   whatIsGrappleable:
     serializedVersion: 2
     m_Bits: 2048
@@ -879,15 +880,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e4e7554dd94a54cb1e66f9930632bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grapplingScript: {fileID: 2061733907}
   playerCam: {fileID: 8137128627098702490}
   orientation: {fileID: 8137128627873341638}
   moveSpeed: 2500
-  maxSpeed: 10
-  grounded: 0
+  maxSpeed: 5
+  sprintMultiplier: 20
+  isGrounded: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  counterMovement: 0.175
+  counterMovement: 0.2
   maxSlopeAngle: 35
   slideForce: 400
   slideCounterMovement: 0.2
@@ -1050,7 +1053,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FirstPersonCam: {fileID: 8137128626716779759}
-  ThirdPersonCam: {fileID: 0}
 --- !u!1 &8137128627166186281
 GameObject:
   m_ObjectHideFlags: 0
