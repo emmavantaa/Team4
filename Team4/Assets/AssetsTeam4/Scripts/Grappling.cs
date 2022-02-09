@@ -7,6 +7,7 @@ public class Grappling : MonoBehaviour
     private LineRenderer lr;
     private Vector3 grapplePoint;
     private SpringJoint joint;
+
     public LayerMask grappMask;
 
     /** Public variables */
@@ -51,26 +52,61 @@ public class Grappling : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance, grappMask))
         {
-            grapplePoint = hit.point;
-            joint = player.gameObject.AddComponent<SpringJoint>();
-            joint.autoConfigureConnectedAnchor = false;
-            joint.connectedAnchor = grapplePoint;
+            LayerMask layerHit = hit.transform.gameObject.layer;
 
-            float distanceFromPoint = Vector3.Distance(a: player.position, b: grapplePoint);
+            if (layerHit.value == 12)
+            {
+                grapplePoint = hit.point;
+                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint.autoConfigureConnectedAnchor = false;
+                joint.connectedAnchor = grapplePoint;
+
+                float distanceFromPoint = Vector3.Distance(a: player.position, b: grapplePoint);
 
 
-            // The distance grapple will try to keep from grapple point.
-            joint.maxDistance = distanceFromPoint * 0.8f;
-            joint.minDistance = distanceFromPoint * 0.25f;
+                // The distance grapple will try to keep from grapple point.
+                joint.maxDistance = distanceFromPoint * 0.8f;
+                joint.minDistance = distanceFromPoint * 0.25f;
 
-            // Gameplay variables - test and change if needed
-            joint.spring = 4.5f;
-            joint.damper = 7f;
-            joint.massScale = 4.5f;
+                // Gameplay variables - test and change if needed
+                joint.spring = 4.5f;
+                joint.damper = 7f;
+                joint.massScale = 4.5f;
 
-            lr.positionCount = 2;
+                lr.positionCount = 2;
+
+
+            }
+            else if (layerHit.value == 12)
+            {
+                grapplePoint = hit.point;
+                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint.autoConfigureConnectedAnchor = false;
+                joint.connectedAnchor = grapplePoint;
+
+                float distanceFromPoint = Vector3.Distance(a: player.position, b: grapplePoint);
+
+
+                // The distance grapple will try to keep from grapple point.
+                joint.maxDistance = distanceFromPoint * 0.8f;
+                joint.minDistance = distanceFromPoint * 0.25f;
+
+                // Gameplay variables - test and change if needed
+                joint.spring = 4.5f;
+                joint.damper = 7f;
+                joint.massScale = 4.5f;
+
+                lr.positionCount = 2;
+            }
+            else if (layerHit.value == 13)
+            {
+
+            }
+
         }
     }
+
+
 
     /// <summary>
     /// Call whenever we want to start a grapple
@@ -93,5 +129,6 @@ public class Grappling : MonoBehaviour
         lr.positionCount = 0;
         Destroy(joint);
     }
+
 
 }

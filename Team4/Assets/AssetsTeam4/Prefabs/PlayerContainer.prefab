@@ -40,7 +40,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7885302442022933649}
   - component: {fileID: 7716463867925920030}
-  - component: {fileID: 792797576598727664}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -162,28 +161,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &792797576598727664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641144993606813131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52e6e38da98fc8b4694cf1a33432cac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grappMask:
-    serializedVersion: 2
-    m_Bits: 0
-  whatIsGrappleable:
-    serializedVersion: 2
-    m_Bits: 64
-  gunTip: {fileID: 970401679935384723}
-  aimingCamera: {fileID: 8137128627098702490}
-  player: {fileID: 8137128626817230183}
-  maxDistance: 50
 --- !u!1 &2931407312983118003
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,9 +458,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grapplingScript: {fileID: 0}
+  machineBattery: {fileID: 0}
+  generator: {fileID: 0}
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 14336
   playerObject: {fileID: 8137128626817230182}
   beamStartPoint: {fileID: 970401679935384723}
   aimingCamera: {fileID: 8137128626716779752}
@@ -829,6 +808,7 @@ GameObject:
   - component: {fileID: 8137128626817230183}
   - component: {fileID: 8137128626817230177}
   - component: {fileID: 6327526851846820183}
+  - component: {fileID: 1318080768}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -895,6 +875,19 @@ MonoBehaviour:
   slideForce: 400
   slideCounterMovement: 0.2
   jumpForce: 450
+--- !u!114 &1318080768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8137128626817230182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceaaa3c450532874893ec4f080ebf4fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 1
 --- !u!1 &8137128626939497456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,6 +1510,10 @@ PrefabInstance:
       propertyPath: aimingCamera
       value: 
       objectReference: {fileID: 8137128626716779752}
+    - target: {fileID: 4042893312017838368, guid: 2de34575056345f46945830995b13138, type: 3}
+      propertyPath: grappMask.m_Bits
+      value: 14336
+      objectReference: {fileID: 0}
     - target: {fileID: 4042893313315219626, guid: 2de34575056345f46945830995b13138, type: 3}
       propertyPath: m_Pivot.x
       value: 0
