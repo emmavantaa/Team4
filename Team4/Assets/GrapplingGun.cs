@@ -9,6 +9,9 @@ public class GrapplingGun : MonoBehaviour
     private Vector3 grapplePoint;
     private Vector3 startPoint;
     private SpringJoint joint;
+    private Battery battery;
+    public Battery machineBattery;
+    public Generator generator;
     private float maxDistance = 50;
 
     private bool isShooting, isGrappling, isGrounded;
@@ -17,6 +20,10 @@ public class GrapplingGun : MonoBehaviour
     public GameObject playerObject;
     public Transform beamStartPoint, aimingCamera, player;
 
+    private enum grappleState { grapple, generator, machine, none };
+
+    private grappleState currentGrappleState = grappleState.none;
+
     public float jointSpring = 4f;
     public float jointDamper = 7f;
     public float massScale = 4.5f;
@@ -24,6 +31,7 @@ public class GrapplingGun : MonoBehaviour
 
     void Awake()
     {
+        battery = playerObject.GetComponent<Battery>();
         lr = GetComponent<LineRenderer>();
         isShooting = false;
         isGrappling = false;
@@ -59,49 +67,115 @@ public class GrapplingGun : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance, layerMask: whatIsGrappleable))
         {
-            isGrappling = true;
-            grapplePoint = hit.point;
-            joint = player.gameObject.AddComponent<SpringJoint>();
-            joint.autoConfigureConnectedAnchor = false;
-            joint.connectedAnchor = grapplePoint;
+            LayerMask layerHit = hit.transform.gameObject.layer;
 
-            //float distanceFromPoint = Vector3.Distance(a: player.position, b: grapplePoint);
-            float distanceFromPoint = Vector3.Distance(a: startPoint, b: grapplePoint);
-
-            // The distance grapple will try to keep from grapple point.
-            joint.maxDistance = distanceFromPoint * 0.8f;
-            joint.minDistance = distanceFromPoint * 0.25f;
-
-            // Gameplay variables - test and change if needed
-
-            if (isGrounded)
+            if (layerHit.value == 11)
             {
-                joint.spring = jointSpringGrounded;
+                isGrappling = true;
+                currentGrappleState = grappleState.grapple;
+                grapplePoint = hit.point;
+                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint.autoConfigureConnectedAnchor = false;
+                joint.connectedAnchor = grapplePoint;
+
+
+                //float distanceFromPoint = Vector3.Distance(a: player.position, b: grapplePoint);
+                float distanceFromPoint = Vector3.Distance(a: startPoint, b: grapplePoint);
+
+                // The distance grapple will try to keep from grapple point.
+                joint.maxDistance = distanceFromPoint * 0.8f;
+                joint.minDistance = distanceFromPoint * 0.25f;
+
+                // Gameplay variables - test and change if needed
+
+                if (isGrounded)
+                {
+                    joint.spring = jointSpringGrounded;
+                }
+                else
+                {
+                    joint.spring = jointSpring;
+                }
+                joint.damper = jointDamper;
+                joint.massScale = massScale;
+
+
+
+                lr.positionCount = 2;
+            }
+
+            else if (layerHit.value == 12) // Generator
+            {
+                currentGrappleState = grappleState.generator;
+                // For rope
+                isGrappling = true;
+                grapplePoint = hit.point;
+                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint.autoConfigureConnectedAnchor = true;
+                joint.connectedAnchor = grapplePoint;
+                lr.positionCount = 2;
+                //
+                generator = hit.transform.gameObject.GetComponent<Generator>();
+
+                if (!generator.IsEmpty())
+                {
+                    Debug.Log("Generator not Empty");
+                    generator.StartDrain(battery);
+                }
+                else
+                {
+                    Debug.Log("Generator Empty");
+                    isGrappling = false;
+                }
+            }
+            else if (layerHit.value == 13)// Machine
+            {
+                currentGrappleState = grappleState.machine;
+                machineBattery = hit.transform.gameObject.GetComponent<Battery>();
+                // For rope
+                isGrappling = true;
+                grapplePoint = hit.point;
+                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint.autoConfigureConnectedAnchor = true;
+                joint.connectedAnchor = grapplePoint;
+                lr.positionCount = 2;
+                //
+                if (battery.GetBatteryChargeLeft(1) && !machineBattery.GetBatteryFull())
+                {
+                    machineBattery.StartCharge();
+                    battery.StartDrain();
+                }
+                else if (machineBattery.GetBatteryFull())
+                {
+                    Debug.Log("Machine Battery Full");
+                    isGrappling = false;
+
+                    machineBattery.StopCharge();
+                    battery.StopDrain();
+                }
+                else
+                {
+                    Debug.Log("Player Battery Empty");
+                    isGrappling = false;
+
+                    machineBattery.StopCharge();
+                    battery.StopDrain();
+                }
             }
             else
             {
-                joint.spring = jointSpring;
+
+                isGrappling = false;
             }
-            joint.damper = jointDamper;
-            joint.massScale = massScale;
-
-
-
-            lr.positionCount = 2;
-        }
-        else
-        {
-            isGrappling = false;
         }
     }
-
     /// <summary>
     /// Call whenever we want to start a grapple
     /// </summary>
     void DrawRope()
     {
         // If not grappling, don't draw the rope
-        if (!joint) return;
+        if (!isGrappling) return;
 
         // Draws a rope from position 0 to position 1
         lr.SetPosition(0, beamStartPoint.position);
@@ -117,6 +191,26 @@ public class GrapplingGun : MonoBehaviour
         isGrappling = false;
         lr.positionCount = 0;
         Destroy(joint);
+
+        //
+
+
+        if (currentGrappleState != grappleState.none)
+
+            switch (currentGrappleState)
+            {
+                case grappleState.grapple:
+                    break;
+
+                case grappleState.generator:
+                    generator.StopDrain();
+                    break;
+
+                case grappleState.machine:
+                    machineBattery.StopCharge();
+                    battery.StopDrain();
+                    break;
+            }
     }
 
     /// <summary>
