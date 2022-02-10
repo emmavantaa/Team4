@@ -108,4 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcecd6a9d5e72f545af4a3d817cb8cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeAmount: 1
+  isInfinite: 0
+  chargeAmount: 10
+  emissiveIntensity: 25
+  emissiveColor: {r: 1, g: 0.633435, b: 0, a: 1}
+  energyCharge: 100
