@@ -19,7 +19,6 @@ public class PlatformMovement : MonoBehaviour
     private Battery MachineBattery;
 
     public Rigidbody rb;
-    public GameObject player;
     public bool isPoweredByMachine;
 
     private bool isWaiting = false;
@@ -53,26 +52,6 @@ public class PlatformMovement : MonoBehaviour
         }
     }
 
-        transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
-
-        // Moves the rb instead to be more "physics-based"
-        //rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
-}
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == playerBody)
-        {
-            player.transform.parent = transform;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == playerBody)
-        {
-            player.transform.parent = null;
-        }
     IEnumerator Wait()
     {
         isWaiting = true;
