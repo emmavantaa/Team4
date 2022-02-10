@@ -15,7 +15,7 @@ public class Reticle : MonoBehaviour
     public LayerMask grappMask;
 
     private float currentSize;
-    private bool canGrapple = false;
+    public bool canGrapple = false;
 
     //TODO color
 

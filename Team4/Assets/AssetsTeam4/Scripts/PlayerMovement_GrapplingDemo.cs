@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class PlayerMovement_GrapplingDemo : MonoBehaviour
 {
@@ -52,6 +53,12 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
     private Vector3 normalVector = Vector3.up;
     private Vector3 wallNormalVector;
 
+    //Audio things
+    public float stepMinInterval = 0.5f;
+    float stepTimer = 0f;
+    public UnityEvent footstepEvent;
+    public Transform playerTransform;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -74,6 +81,21 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
     {
         MyInput();
         Look();
+
+        //Audio, testing
+        var playerRight = Vector3.ProjectOnPlane(playerTransform.TransformDirection(Vector3.right), Vector3.up).normalized;
+        var playerForward = Vector3.ProjectOnPlane(playerTransform.TransformDirection(Vector3.forward), Vector3.up).normalized;
+        stepTimer -= Time.deltaTime; var input = Input.GetAxis("Horizontal") * playerRight +
+            Input.GetAxis("Vertical") * playerForward; 
+        if (input.magnitude > 0.7f) {
+            if (isGrounded) {
+                if (stepTimer < 0) {
+                    footstepEvent.Invoke();
+                    stepTimer = stepMinInterval;
+                    }
+                }
+            }
+
     }
 
     /// <summary>
