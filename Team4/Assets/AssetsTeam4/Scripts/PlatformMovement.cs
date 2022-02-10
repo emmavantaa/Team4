@@ -16,6 +16,8 @@ public class PlatformMovement : MonoBehaviour
     public GameObject player;
     public bool isPoweredByMachine;
 
+    private bool isWaiting = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +29,11 @@ public class PlatformMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (MachineBattery.GetBatteryFull() || !isPoweredByMachine)
+        if ((MachineBattery.GetBatteryFull() && !isWaiting) || (!isPoweredByMachine && !isWaiting))
         {
             if (Vector3.Distance(waypoints[num].transform.position, transform.position) < wpradius)
             {
+                StartCoroutine(Wait());
                 num++;
                 if (num >= waypoints.Length)
                 {
@@ -41,5 +44,13 @@ public class PlatformMovement : MonoBehaviour
             rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
         }
     }
+
+    IEnumerator Wait()
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(2);
+        isWaiting = false;
+    }
+
 
 }
