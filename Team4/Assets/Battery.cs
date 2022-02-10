@@ -62,7 +62,7 @@ public class Battery : MonoBehaviour
 
     public void chargeBattery(float amount)
     {
-        if (isCharging)
+        if (isCharging && !batteryFull)
         {
             if (batteryCharge <= batteryCapasity)
             {

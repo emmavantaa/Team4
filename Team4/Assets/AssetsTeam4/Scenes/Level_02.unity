@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 27.403503, g: 35.55078, b: 56.2041, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1276,7 +1276,7 @@ PrefabInstance:
       objectReference: {fileID: 1184162333}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: isPoweredByMachine
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: waypoints.Array.size
@@ -10165,7 +10165,7 @@ PrefabInstance:
       objectReference: {fileID: 1814962842}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: isPoweredByMachine
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: waypoints.Array.size
@@ -15416,7 +15416,7 @@ PrefabInstance:
       objectReference: {fileID: 1184162333}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: isPoweredByMachine
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6114581351995933694, guid: 4d784824815f9f0418f37e2740a5ada9, type: 3}
       propertyPath: waypoints.Array.size
