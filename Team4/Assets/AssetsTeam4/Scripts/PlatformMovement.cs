@@ -11,38 +11,53 @@ public class PlatformMovement : MonoBehaviour
     float wpradius = 1;
 
 
-    public Rigidbody rb;
+    //public Rigidbody rb;
     public GameObject player;
-    public FPMovement pS;
+    public GameObject playerBody;
+
+    public GameObject MachineObject;
+    private Battery MachineBattery;
+
+    public Rigidbody rb;
+    public bool isPoweredByMachine;
+
+    private bool isWaiting = false;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //rb = GetComponent<Rigidbody>();
         rb = GetComponent<Rigidbody>();
+        MachineBattery = MachineObject.GetComponent<Battery>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (Vector3.Distance(waypoints[num].transform.position, transform.position) < wpradius)
+        if ((MachineBattery.GetBatteryFull() && !isWaiting) || (!isPoweredByMachine && !isWaiting))
         {
-
-            num++;
-
-            if (num >= waypoints.Length)
+            if (Vector3.Distance(waypoints[num].transform.position, transform.position) < wpradius)
             {
-
-                num = 0;
-
+                StartCoroutine(Wait());
+                num++;
+                if (num >= waypoints.Length)
+                {
+                    num = 0;
+                }
             }
-
+            //transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
+            rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
         }
-
-        //transform.position = Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed);
-        rb.MovePosition(Vector3.MoveTowards(transform.position, waypoints[num].transform.position, Time.deltaTime * speed));
-
     }
+
+    IEnumerator Wait()
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(2);
+        isWaiting = false;
+    }
+
 
 }

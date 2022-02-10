@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelEnd : MonoBehaviour
 {
+
+    public bool isLast = false;
     protected Level_Loader levelLoader;
     void Start()
     {
@@ -11,6 +13,14 @@ public class LevelEnd : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        levelLoader.LoadNextLevel();
+        if (!isLast)
+        {
+            levelLoader.LoadNextLevel();
+
+        }
+        else
+        {
+
+        }
     }
 }
