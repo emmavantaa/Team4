@@ -28,8 +28,8 @@ public class RespawnTrigger : MonoBehaviour
 
             /** For use with respawn point instead of level reload: */
 
-           //  StartCoroutine(ResetLocation(other, 1));
-           //  other.transform.position = spawnLocation.position;
+            //  StartCoroutine(ResetLocation(other, 1));
+            //  other.transform.position = spawnLocation.position;
         }
     }
 
@@ -43,5 +43,5 @@ public class RespawnTrigger : MonoBehaviour
         other.transform.position = spawnLocation.position;
     }
     */
-    
+
 }
