@@ -14,6 +14,7 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
 
     //Other
     private Rigidbody rb;
+    private Battery battery;
 
     //Rotation and look
     private float xRotation;
@@ -62,6 +63,7 @@ public class PlayerMovement_GrapplingDemo : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        battery = GetComponent<Battery>();
     }
 
     void Start()

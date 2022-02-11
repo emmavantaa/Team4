@@ -46,13 +46,13 @@ public class Reticle : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(origin: aimingCamera.position, direction: aimingCamera.forward, out hit, maxDistance, grappMask))
         {
-            Debug.Log("CAN");
+
             canGrapple = true;
         }
         else
         {
             canGrapple = false;
-            Debug.Log("CANT");
+
         }
 
     }
