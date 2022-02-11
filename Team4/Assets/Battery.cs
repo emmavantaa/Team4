@@ -5,7 +5,7 @@ using UnityEngine;
 public class Battery : MonoBehaviour
 {
 
-    private float batteryCharge = 0f;
+    public float batteryCharge = 0f;
     private float batteryCapasity = 100f;
     private bool batteryFull;
     private bool isCharging = false;
