@@ -14,7 +14,9 @@ public class GrapplingGun : MonoBehaviour
     public Generator generator;
     private float maxDistance = 50;
 
-    private bool isShooting, isGrappling, isGrounded;
+    private bool isShooting, isGrounded;
+
+    public bool isGrappling;
 
     public LayerMask whatIsGrappleable;
     public GameObject playerObject;
