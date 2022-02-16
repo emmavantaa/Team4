@@ -7,7 +7,7 @@ public class Battery : MonoBehaviour
 
     public float batteryCharge = 0f;
     private float batteryCapasity = 100f;
-    private bool batteryFull;
+    private bool batteryFull = false;
     private bool isCharging = false;
     private bool isDraining = false;
     [SerializeField]

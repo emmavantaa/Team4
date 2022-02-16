@@ -16,7 +16,7 @@ public class Generator : MonoBehaviour
     public Color emissiveColor = Color.yellow;
 
     [SerializeField]
-    private float energyCharge = 100;
+    private float energyCharge = 50;
     private Battery playerBattery;
     Renderer rend;
 
